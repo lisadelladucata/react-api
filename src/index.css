@@ -34,7 +34,7 @@ HEADER
     padding: 10px 0px;
 }
 
-button{
+.header button{
     margin-right: 10px;
     padding: 15px;
     font-size: 16px;
@@ -52,6 +52,7 @@ CARDS
     gap: 30px;
     flex-wrap: wrap;
     justify-content: space-around;
+    margin-bottom: 20px;
 }
 
 .character{
@@ -68,4 +69,40 @@ CARDS
     max-width: 200px;
     height: 200px;
 }
+
+.delete-btn button{
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.form{
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+    background-color: orange;
+    padding: 10px;
+}
+
+.form div{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form button{
+    margin-right: 10px;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px #303030 solid;
+    background-color: transparent;
+    cursor: pointer;
+    color: white;
+    border-radius: 20px;
+    color: #000;
+    margin: 4px;
+}
+
 
