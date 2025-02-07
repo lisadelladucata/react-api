@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Character from "./components/Character";
+import Header from "./components/Header";
+import Form from "./components/Form";
 
 const initialFormData = {
   name: "",
@@ -10,6 +13,7 @@ const initialFormData = {
 };
 
 export default function App() {
+  const [links, setLinks] = useState({});
   const [characters, setCharacters] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
 
@@ -40,14 +44,11 @@ export default function App() {
     );
   };
 
-  const fetchPosts = () => {
-    axios.get("https://dragonball-api.com/api/characters").then((res) => {
+  const fetchPosts = (url = "https://dragonball-api.com/api/characters") => {
+    axios.get(url).then((res) => {
       setCharacters(res.data.items);
+      setLinks(res.data.links);
     });
-  };
-
-  const resetPosts = () => {
-    setCharacters([]);
   };
 
   useEffect(fetchPosts, []);
@@ -55,110 +56,27 @@ export default function App() {
   return (
     <>
       <div className="container">
-        <div className="header">
-          <img
-            src="https://logos-world.net/wp-content/uploads/2021/02/Dragon-Ball-Logo-1996-present.png"
-            alt="logo"
-          />
-          <div className="btn">
-            <button onClick={fetchPosts} className="upload">
-              Carica Personaggi
-            </button>
-            <button onClick={resetPosts} className="reset">
-              Resetta
-            </button>
-          </div>
-        </div>
+        <Header links={links} fetchPosts={fetchPosts} />
 
         <div className="card">
           {characters.map((character) => {
             return (
               <>
-                <div key={character.id} className="character">
-                  <div className="character-img">
-                    {character.image &&
-                    (character.image.startsWith("http://") ||
-                      character.image.startsWith("https://")) ? (
-                      <img src={character.image} alt="img" />
-                    ) : (
-                      <img src="path/to/default/image.jpg" alt="default" />
-                    )}
-                  </div>
-                  <div className="character-info">
-                    <h2 className="character-name">{character.name}</h2>
-                    <div className="character-description">
-                      <p>{character.race}</p>
-                      <h3>Base KI</h3>
-                      <p>{character.ki}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="delete-btn">
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(character.id)}>
-                    X
-                  </button>
-                </div>
+                <Character
+                  key={character.id}
+                  character={character}
+                  handleDelete={handleDelete}
+                />
               </>
             );
           })}
         </div>
         <div className="form">
-          <h3>Aggiungi una Card</h3>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="title">Nome del Personaggio</label>
-              <input
-                type="text"
-                value={formData.name}
-                required
-                onChange={(e) => {
-                  handleFormField(e.target.value, "name");
-                }}
-              />
-            </div>
-            <div>
-              <label htmlFor="img">Url immagine</label>
-              <input
-                id="img-form"
-                type="text"
-                required
-                value={formData.image}
-                onChange={(e) => handleFormField(e.target.value, "image")}
-              />
-            </div>
-            <div>
-              <label htmlFor="race">Razza</label>
-              <input
-                id="race"
-                type="text"
-                required
-                value={formData.race}
-                onChange={(e) => handleFormField(e.target.value, "race")}
-              />
-            </div>
-            <div>
-              <label htmlFor="ki">KI</label>
-              <input
-                id="ki"
-                type="number"
-                required
-                min={0}
-                value={formData.ki}
-                onChange={(e) => handleFormField(e.target.value, "ki")}
-              />
-            </div>
-            <div>
-              <label htmlFor="checkbox">Pubblica</label>
-              <input
-                type="checkbox"
-                checked={formData.check}
-                onChange={(e) => handleFormField(e.target.checked, "check")}
-              />
-            </div>
-            <button type="submit">Invia</button>
-          </form>
+          <Form
+            handleFormField={handleFormField}
+            onSubmit={handleSubmit}
+            formData={formData}
+          />
         </div>
       </div>
     </>
