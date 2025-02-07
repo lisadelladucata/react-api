@@ -76,7 +76,9 @@ export default function App() {
               <>
                 <div key={character.id} className="character">
                   <div className="character-img">
-                    {character.image ? (
+                    {character.image &&
+                    (character.image.startsWith("http://") ||
+                      character.image.startsWith("https://")) ? (
                       <img src={character.image} alt="img" />
                     ) : (
                       <img src="path/to/default/image.jpg" alt="default" />
@@ -110,6 +112,7 @@ export default function App() {
               <input
                 type="text"
                 value={formData.name}
+                required
                 onChange={(e) => {
                   handleFormField(e.target.value, "name");
                 }}
@@ -120,8 +123,9 @@ export default function App() {
               <input
                 id="img-form"
                 type="text"
+                required
                 value={formData.image}
-                onChange={(e) => handleFormField(e.target.value, "img")}
+                onChange={(e) => handleFormField(e.target.value, "image")}
               />
             </div>
             <div>
@@ -129,7 +133,8 @@ export default function App() {
               <input
                 id="race"
                 type="text"
-                value={formData.content}
+                required
+                value={formData.race}
                 onChange={(e) => handleFormField(e.target.value, "race")}
               />
             </div>
@@ -138,7 +143,9 @@ export default function App() {
               <input
                 id="ki"
                 type="number"
-                value={formData.content}
+                required
+                min={0}
+                value={formData.ki}
                 onChange={(e) => handleFormField(e.target.value, "ki")}
               />
             </div>
